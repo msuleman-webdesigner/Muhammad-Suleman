@@ -152,6 +152,35 @@
       margin-top: auto;
     }
 
+    .menu-toggle {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 1100;
+      width: 52px;
+      height: 52px;
+      border: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+    }
+
+    .menu-toggle span {
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      display: block;
+      border-radius: 999px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -596,6 +625,24 @@
     }
 
     @media (max-width: 980px) {
+      body {
+        padding-left: 0;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      header {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        width: 280px;
+      }
+
+      header.open {
+        transform: translateX(0);
+      }
+
       .hero-grid,
       .about-grid,
       .contact-wrap {
@@ -614,20 +661,8 @@
         padding: 72px 0;
       }
 
-      .nav-wrap {
-        flex-direction: column;
-        gap: 0.8rem;
-        padding: 0.8rem 0;
-      }
-
-      nav ul {
-        gap: 0.7rem;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
       .hero {
-        padding-top: 90px;
+        padding-top: 110px;
       }
 
       .hero-grid {
@@ -674,6 +709,12 @@
   </style>
 </head>
 <body>
+  <button class="menu-toggle" aria-label="Open navigation menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
   <header>
     <div class="container nav-wrap">
       <div class="sidebar-profile">
@@ -874,5 +915,28 @@
   <footer>
     <div class="container">© 2026 Muhammad Suleman | All Rights Reserved</div>
   </footer>
+
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const header = document.querySelector('header');
+    const navLinks = document.querySelectorAll('nav a');
+
+    if (menuToggle && header) {
+      menuToggle.addEventListener('click', () => {
+        header.classList.toggle('open');
+        menuToggle.setAttribute(
+          'aria-expanded',
+          header.classList.contains('open') ? 'true' : 'false'
+        );
+      });
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          header.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  </script>
 </body>
 </html>
